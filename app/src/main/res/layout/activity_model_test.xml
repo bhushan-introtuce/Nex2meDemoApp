@@ -1,0 +1,354 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:keepScreenOn="true"
+    android:background="#ffffff"
+    android:orientation="vertical"
+    tools:context=".ModelTestActivity">
+
+
+<!--    <FrameLayout-->
+<!--        android:id="@+id/container"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="0dp"-->
+<!--        android:layout_weight="2"-->
+<!--        app:layout_constraintBottom_toBottomOf="parent"-->
+<!--        app:layout_constraintEnd_toEndOf="parent"-->
+<!--        app:layout_constraintStart_toStartOf="parent" />-->
+
+<!--    <TextView-->
+<!--        android:visibility="gone"-->
+<!--        android:id="@+id/time_remaning"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="wrap_content"-->
+<!--        android:layout_gravity="center"-->
+<!--        android:layout_marginBottom="10dp"-->
+<!--        android:fontFamily="@font/nunito_sans_semi_bold"-->
+<!--        android:gravity="center"-->
+<!--        android:padding="5dp"-->
+<!--        android:text="Timing.."-->
+<!--        android:textColor="@color/my_primary" />-->
+
+    <ScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <LinearLayout
+            android:background="#ffffff"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+               android:layout_marginTop="50dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                tools:context=".InitialFragment">
+
+                <!--    <include android:id="@+id/news_title"-->
+                <!--        android:layout_width="match_parent"-->
+                <!--        android:layout_height="wrap_content"-->
+                <!--        layout="@layout/test_introtuction"/>-->
+
+                <!--    <TextView-->
+                <!--        android:layout_width="wrap_content"-->
+                <!--        android:layout_height="wrap_content"-->
+                <!--        android:layout_marginTop="30dp"-->
+                <!--        android:textColor="@color/Title"-->
+                <!--        android:textStyle="bold"-->
+                <!--        android:layout_marginStart="30dp"-->
+                <!--        android:layout_marginEnd="30dp"-->
+                <!--        android:text="@string/static_msg"-->
+                <!--        />-->
+
+
+                <ImageView
+                    android:id="@+id/iv_info"
+                    android:layout_width="50dp"
+                    android:layout_height="50dp"
+                    android:padding="15dp"
+                    android:src="@drawable/ic_baseline_info_24"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+
+
+                <ImageView
+
+                    android:id="@+id/tv_1"
+                    android:layout_width="202dp"
+                    android:layout_height="78dp"
+                    android:layout_marginTop="20dp"
+                    android:background="@drawable/nextome"
+                    android:gravity="center"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent" />
+
+                <TextView
+                    android:id="@+id/textView"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="10dp"
+                    android:fontFamily="@font/nunito_sans_regular"
+                    android:text=" Introtuce Pvt Ltd"
+                    android:textColor="@color/my_primary"
+                    android:textSize="14dp"
+                    android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="@+id/tv_1"
+                    app:layout_constraintTop_toBottomOf="@+id/tv_1" />
+
+                <TextView
+                    android:id="@+id/messageText"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="30dp"
+                    android:layout_marginBottom="2dp"
+                    android:fontFamily="@font/nunito_sans_regular"
+                    android:text="Device Testing"
+                    android:textColor="@color/my_primary"
+                    android:textSize="25dp"
+                    android:textStyle="bold"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/textView" />
+
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+
+            <TextView
+                android:layout_gravity="center"
+                android:foregroundGravity="center"
+                android:id="@+id/btn_test_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="15dp"
+                android:layout_marginEnd="40dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/orangebutton"
+                android:fontFamily="@font/nunito_sans_semi_bold"
+                android:gravity="center"
+                android:text=" Start Test 1"
+                android:textAppearance="@style/Widget.AppCompat.Button"
+                android:textColor="#ffffff"
+                android:textSize="22sp" />
+
+            <TextView
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:gravity="center"
+                android:textSize="12dp"
+                android:text="6 models, runtime: 1min, cool down: 0min"
+                android:fontFamily="@font/nunito_sans_regular"/>
+
+
+            <TextView
+                android:layout_gravity="center"
+                android:foregroundGravity="center"
+                android:id="@+id/btn_test_2"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="28dp"
+                android:layout_marginEnd="40dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/orangebutton"
+                android:fontFamily="@font/nunito_sans_semi_bold"
+                android:gravity="center"
+                android:letterSpacing="-0.019"
+                android:lineHeight="10sp"
+                android:lineSpacingExtra="2sp"
+                android:text=" Start Test 2"
+                android:textAppearance="@style/Widget.AppCompat.Button"
+                android:textColor="#ffffff"
+                android:textSize="22sp" />
+
+            <TextView
+                android:gravity="center"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:layout_width="match_parent"
+                android:textSize="12dp"
+                android:layout_height="wrap_content"
+                android:text="6 models, runtime: 3min, cool down: 1min"
+                android:fontFamily="@font/nunito_sans_regular"/>
+
+            <TextView
+                android:layout_gravity="center"
+                android:foregroundGravity="center"
+                android:id="@+id/btn_test_3"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="28dp"
+                android:layout_marginEnd="40dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/orangebutton"
+                android:fontFamily="@font/nunito_sans_semi_bold"
+                android:gravity="center"
+                android:letterSpacing="-0.019"
+                android:lineHeight="10sp"
+                android:lineSpacingExtra="2sp"
+                android:text=" Start Test 3"
+                android:textAppearance="@style/Widget.AppCompat.Button"
+                android:textColor="#ffffff"
+                android:textSize="22sp" />
+
+            <TextView
+                android:gravity="center"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="12dp"
+                android:text="6 models, runtime: 5min, cool down: 3min"
+                android:fontFamily="@font/nunito_sans_regular"/>
+
+            <TextView
+                android:layout_gravity="center"
+                android:foregroundGravity="center"
+                android:id="@+id/btn_all_tests"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginTop="28dp"
+                android:layout_marginEnd="40dp"
+                android:layout_marginBottom="8dp"
+                android:background="@drawable/orangebutton"
+                android:fontFamily="@font/nunito_sans_semi_bold"
+                android:gravity="center"
+                android:letterSpacing="-0.019"
+                android:lineHeight="10sp"
+                android:lineSpacingExtra="2sp"
+                android:text=" Start All Tests"
+                android:textAppearance="@style/Widget.AppCompat.Button"
+                android:textColor="#ffffff"
+                android:textSize="22sp" />
+
+            <TextView
+                android:gravity="center"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:layout_marginBottom="20dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:textSize="12dp"
+                android:text="All 3 tests , expected time 78 minutes"
+                android:fontFamily="@font/nunito_sans_regular"/>
+
+
+            <com.skydoves.powerspinner.PowerSpinnerView
+                android:id="@+id/models"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:background="@drawable/spinner_bg"
+                android:gravity="center"
+                android:hint="Models (All)"
+                android:padding="10dp"
+                android:textColor="@color/black"
+                android:textColorHint="#2F2B2B"
+                android:textSize="14.5sp"
+                android:visibility="gone"
+                app:spinner_arrow_gravity="end"
+                app:spinner_arrow_padding="8dp"
+                app:spinner_divider_color="#707070"
+                app:spinner_divider_show="true"
+                app:spinner_divider_size="0.4dp"
+                app:spinner_item_array="@array/model"
+                app:spinner_popup_animation="dropdown"
+                app:spinner_popup_background="#DEDEDE"
+                app:spinner_popup_elevation="14dp" />
+
+            <com.skydoves.powerspinner.PowerSpinnerView
+                android:id="@+id/runtime"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/spinner_bg"
+                android:gravity="center"
+                android:hint="Runtime (1min)"
+                android:padding="10dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:textSize="14.5sp"
+                android:visibility="gone"
+                app:spinner_arrow_gravity="end"
+                app:spinner_arrow_padding="8dp"
+                app:spinner_divider_color="#707070"
+                app:spinner_divider_show="true"
+                app:spinner_divider_size="0.4dp"
+                app:spinner_item_array="@array/runtime"
+                app:spinner_popup_animation="dropdown"
+                app:spinner_popup_background="#DEDEDE"
+                app:spinner_popup_elevation="14dp" />
+
+
+            <com.skydoves.powerspinner.PowerSpinnerView
+                android:id="@+id/cooling"
+                android:layout_width="300dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginTop="10dp"
+                android:background="@drawable/spinner_bg"
+                android:gravity="center"
+                android:hint="Colling (0min)"
+                android:padding="10dp"
+                android:textColor="@color/black"
+                android:textColorHint="@color/black"
+                android:textSize="14.5sp"
+                android:visibility="gone"
+                app:spinner_arrow_gravity="end"
+                app:spinner_arrow_padding="8dp"
+                app:spinner_divider_color="#707070"
+                app:spinner_divider_show="true"
+                app:spinner_divider_size="0.4dp"
+                app:spinner_item_array="@array/cooling"
+                app:spinner_popup_animation="dropdown"
+                app:spinner_popup_background="#DEDEDE"
+                app:spinner_popup_elevation="14dp" />
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:layout_marginStart="20dp"
+                android:layout_marginTop="30dp"
+                android:layout_marginEnd="20dp"
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:visibility="gone">
+
+                <TextView
+                    android:id="@+id/control"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:background="@drawable/btn_round"
+                    android:padding="20dp"
+                    android:text="Start Test"
+                    android:textColor="#ffffff"
+                    android:textStyle="bold" />
+
+
+
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </ScrollView>
+
+</LinearLayout>
+

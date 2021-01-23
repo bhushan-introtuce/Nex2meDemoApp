@@ -1,0 +1,49 @@
+<resources>
+    <string name="app_name">Nex2Me Device Testing</string>
+    <string name="rationale_video_app">This app needs access to your camera and mic so you can perform video calls</string>
+    <string name="rationale_ask_again">This app may not work correctly without the requested permissions. Open the app settings screen to modify app permissions.</string>
+    <string name="title_settings_dialog">Permissions Required</string>
+    <string name="setting">Settings</string>
+    <string name="cancel">Cancel</string>
+    <string name="buttonText">Click to begin please</string>
+    <string name="intro">Nex2me demo app, Bring you in remote videos.</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="static_msg">We gether information about CPU, GPU RAM,bettery usage, temprature etc. THis information will be used to understand how deep learning models behave in different phones</string>
+
+    <string-array name="questions1">
+        <item>What is your favourite color?</item>
+        <item>What is your favourite food?</item>
+        <item>What is your favourite pet`s name?</item>
+        <item>What is your favourite coffee?</item>
+        <item>Why Kotlin?</item>
+    </string-array>
+
+    <string-array name="model">
+        <item>All</item>
+        <!--        <item>Small Int8</item>-->
+        <item>Small Fp16</item>
+        <item>Small Fp32</item>
+        <!--        <item>Medium Int8</item>-->
+        <item>Medium Fp16</item>
+        <item>Medium Fp32</item>
+        <!--        <item>Large Int8</item>-->
+        <item>Large Fp16</item>
+        <item>Large Fp32</item>
+    </string-array>
+
+    <string-array name="runtime">
+        <item>1min</item>
+        <item>3min</item>
+        <item>5min</item>
+        <item>10min</item>
+        <item>15min</item>
+    </string-array>
+    <string-array name="cooling">
+        <item>0min</item>
+        <item>1min</item>
+        <item>3min</item>
+        <item>5min</item>
+    </string-array>
+
+</resources>

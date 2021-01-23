@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "537443462826",
+    "project_id": "nex2me-20232",
+    "storage_bucket": "nex2me-20232.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:537443462826:android:3140184bc8bd783b57ead3",
+        "android_client_info": {
+          "package_name": "co.introtuce.nex2me.test"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "537443462826-cgl0hk20kv5gc72ouhlfm97obpcfuq92.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBxsTjQLBpyD3blJ_GIckf_gp6TIIa0ZNg"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "537443462826-cgl0hk20kv5gc72ouhlfm97obpcfuq92.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
