@@ -6,8 +6,11 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.content.pm.PackageInfo;
+import android.content.pm.PackageManager;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
+import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.util.DisplayMetrics;
@@ -30,10 +33,18 @@ import androidx.fragment.app.FragmentTransaction;
 import com.an.deviceinfo.device.model.Battery;
 import com.an.deviceinfo.permission.PermissionManager;
 import com.an.deviceinfo.permission.PermissionUtils;
+import com.google.android.gms.tasks.Task;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
+import com.google.firebase.database.DatabaseReference;
+import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.skydoves.powerspinner.OnSpinnerItemSelectedListener;
 import com.skydoves.powerspinner.PowerSpinnerView;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.UUID;
 
 import co.introtuce.nex2me.test.ui.CollingAct;
@@ -58,7 +69,7 @@ public class ModelTestActivity extends AppCompatActivity implements PermissionMa
 //    };
 
     private static final String TAG = "ModelTestAct";
-   // private FrameLayout container;
+    // private FrameLayout container;
     private PermissionManager permissionManager;
     private PermissionUtils permissionUtils;
 //    private ModelTestFragment fragment;
@@ -95,13 +106,34 @@ public class ModelTestActivity extends AppCompatActivity implements PermissionMa
     private Fragment oldFrag;
     private Fragment old_cooling_Frag;
     int c_test_no = 1;
-    ImageView ivMessage;
+    ImageView ivMessage, ivPerformance;
+    TextView tvResults;
+    private boolean is_for_install = false;
+
+    FirebaseDatabase database;
+    DatabaseReference myRef;
 
 
     @Override
     protected void onResume() {
         super.onResume();
         askPermission();
+        // showInteruptview();
+
+    }
+
+    private void showInteruptview() {
+
+        if (mPreferences.getBoolean("intrupted", true)) {
+            try {
+                showMessage("Last Test Was Terminated  please re run the test");
+                mPreferences.edit().putBoolean("intrupted",false).commit();
+            }catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+
+        }
 
     }
 
@@ -111,8 +143,21 @@ public class ModelTestActivity extends AppCompatActivity implements PermissionMa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_model_test);
 
+        database = FirebaseDatabase.getInstance();
+
+        myRef = database.getReference("aaaa_code").child("code");
+
         mPreferences = getSharedPreferences(
+
                 sharedPrefFile, MODE_PRIVATE);
+
+        myRef.addValueEventListener(postListener);
+
+
+//        if (checkUpdate()) {
+//            is_for_install = true;
+//            showMessage("New eversion of App is available Please Install for smooth experience");
+//        }
 //
 //        if (mPreferences.getBoolean("firstrun", true)) {
 //            updateUUid();
@@ -125,9 +170,25 @@ public class ModelTestActivity extends AppCompatActivity implements PermissionMa
         test1 = findViewById(R.id.btn_test_1);
         test2 = findViewById(R.id.btn_test_2);
         test3 = findViewById(R.id.btn_test_3);
+        tvResults = findViewById(R.id.tv_results);
         //container = findViewById(R.id.container);
         allTests = findViewById(R.id.btn_all_tests);
         ivMessage = findViewById(R.id.iv_info);
+        ivPerformance = findViewById(R.id.iv_performance);
+
+        ivPerformance.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(ModelTestActivity.this, Performance.class));
+
+            }
+        });
+        tvResults.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                startActivity(new Intent(ModelTestActivity.this, Performance.class));
+            }
+        });
 
         ivMessage.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -136,7 +197,7 @@ public class ModelTestActivity extends AppCompatActivity implements PermissionMa
                 alertBox.setContentView(R.layout.custom_message_box);
                 TextView tvOk = alertBox.findViewById(R.id.tv_ok_alert);
                 DisplayMetrics displayMetrics = new DisplayMetrics();
-               getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+                getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
                 int height = displayMetrics.heightPixels;
                 int width = displayMetrics.widthPixels;
                 alertBox.getWindow().setLayout(width - 20, ViewGroup.LayoutParams.WRAP_CONTENT);
@@ -218,21 +279,66 @@ public class ModelTestActivity extends AppCompatActivity implements PermissionMa
 
     }
 
+    private boolean checkUpdate() {
+
+
+        return false;
+    }
+
+    ValueEventListener postListener = new ValueEventListener() {
+        @Override
+        public void onDataChange(DataSnapshot dataSnapshot) {
+            // Get Post object and use the values to update the UI
+            // Post post = dataSnapshot.getValue(Post.class);
+
+            try {
+                PackageInfo pInfo = getPackageManager().getPackageInfo(getPackageName(), 0);
+                String version = pInfo.versionName;
+
+                if (pInfo.versionCode < Integer.parseInt(dataSnapshot.getValue().toString())) {
+                    is_for_install = true;
+                    showMessage("New version of App is available Please Install for smooth experience");
+                }
+
+                Log.d("name>>", version + " is");
+
+                Log.d("versionCode>>", pInfo.versionCode + " is");
+
+            } catch (PackageManager.NameNotFoundException e) {
+                e.printStackTrace();
+            }
+
+
+            Log.d(TAG, "FromDb"
+                    + dataSnapshot.getValue().toString());
+
+            // ...
+        }
+
+        @Override
+        public void onCancelled(DatabaseError databaseError) {
+            // Getting Post failed, log a message
+            Log.w(TAG, "loadPost:onCancelled", databaseError.toException());
+            // ...
+        }
+    };
+
     private void showInitialView(String message) {
+
         is_test_running = false;
         test_count = 0;
-       // Log.d("debug>>", "child Count >>" + container.getChildCount());
 
+        // Log.d("debug>>", "child Count >>" + container.getChildCount());
 //        if(time_remaning.getVisibility()==View.VISIBLE)
 //            time_remaning.setVisibility(View.GONE);
+
 
         if (thread != null) {
             if (thread.isAlive())
                 thread.interrupt();
-
         }
-
         resetButtonText();
+    }
 
 //        InitialFragment fragment = new InitialFragment();
 //        fragment.setCustomeMessage(message);
@@ -244,9 +350,8 @@ public class ModelTestActivity extends AppCompatActivity implements PermissionMa
 //        transaction.commit();
 
 
-    }
-
     private void resetButtonText() {
+        showInteruptview();
         test1.setText("Start Test 1");
         test2.setText("Start Test 2");
         test3.setText("Start Test 3");
@@ -332,13 +437,29 @@ public class ModelTestActivity extends AppCompatActivity implements PermissionMa
         getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
         int height = displayMetrics.heightPixels;
         int width = displayMetrics.widthPixels;
+
+        if (is_for_install) {
+            tvOk.setText("Install");
+        }
         alertBox.getWindow().setLayout(width - 20, ViewGroup.LayoutParams.WRAP_CONTENT);
         alertBox.show();
         tvmessage.setText(msg);
         tvOk.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                alertBox.dismiss();
+                if (is_for_install) {
+                    final String appPackageName = getPackageName(); // getPackageName() from Context or Activity object
+                    try {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("market://details?id=" + appPackageName)));
+                    } catch (android.content.ActivityNotFoundException anfe) {
+                        startActivity(new Intent(Intent.ACTION_VIEW, Uri.parse("https://play.google.com/store/apps/details?id=" + appPackageName)));
+                    }
+                    alertBox.dismiss();
+
+                } else {
+                    alertBox.dismiss();
+                }
+
 
             }
         });
@@ -348,12 +469,11 @@ public class ModelTestActivity extends AppCompatActivity implements PermissionMa
 
         Intent i = new Intent(ModelTestActivity.this,
                 ModelRunActivity.class);
-
         i.putExtra("graph_name", graphName);
         i.putExtra("c_time", m_cool_time);
         i.putExtra("r_time", m_run_time);
         i.putExtra("test_id", testid);
-        i.putExtra("test_no",c_test_no+"");
+        i.putExtra("test_no", c_test_no + "");
 
         startActivityForResult(i, 111);
         overridePendingTransition(0, 0);
@@ -445,10 +565,16 @@ public class ModelTestActivity extends AppCompatActivity implements PermissionMa
                             if (is_test_running) {
                                 showMessage("Another test is running please let it complete first ");
                             } else {
+                                mPreferences.edit().putBoolean("save_under_all_tests",false).commit();
                                 m_run_time = 1;
                                 m_cool_time = 0;
                                 c_test_no = 1;
-                                testid = "Test 1 >>" + UUID.randomUUID();
+
+                                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+                                String format = simpleDateFormat.format(new Date());
+                                Log.d(TAG, "Current Timestamp: " + format);
+
+                                testid = "Test 1 >>" + format;
                                 m_graph_name = "small_fp16.binarypb";
                                 test1.setText("Stop Test 1");
                                 startFragment(m_graph_name);
@@ -480,10 +606,14 @@ public class ModelTestActivity extends AppCompatActivity implements PermissionMa
                             if (is_test_running) {
                                 showMessage("Another test is running please let it complete first ");
                             } else {
+                                mPreferences.edit().putBoolean("save_under_all_tests",false).commit();
                                 m_run_time = 3;
                                 m_cool_time = 1;
                                 c_test_no = 2;
-                                testid = "Test 2 >>" + UUID.randomUUID();
+                                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+                                String format = simpleDateFormat.format(new Date());
+                                Log.d(TAG, "Current Timestamp: " + format);
+                                testid = "Test 2 >>" + format;
                                 m_graph_name = "small_fp16.binarypb";
                                 test2.setText("Stop Test 2");
                                 startFragment(m_graph_name);
@@ -514,10 +644,14 @@ public class ModelTestActivity extends AppCompatActivity implements PermissionMa
                             if (is_test_running) {
                                 showMessage("Another test is running please let it complete first ");
                             } else {
+                                mPreferences.edit().putBoolean("save_under_all_tests",false).commit();
                                 m_run_time = 5;
                                 m_cool_time = 3;
                                 c_test_no = 3;
-                                testid = "Test 3 >>" + UUID.randomUUID();
+                                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+                                String format = simpleDateFormat.format(new Date());
+                                Log.d(TAG, "Current Timestamp: " + format);
+                                testid = "Test 3 >>" + format;
                                 m_graph_name = "small_fp16.binarypb";
                                 test3.setText("Stop Test 3");
                                 startFragment(m_graph_name);
@@ -549,11 +683,17 @@ public class ModelTestActivity extends AppCompatActivity implements PermissionMa
                             if (is_test_running) {
                                 showMessage("Another test is running please let it complete first ");
                             } else {
+                                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
+                                String format = simpleDateFormat.format(new Date());
+                                Log.d(TAG, "Current Timestamp: " + format);
+
+                                mPreferences.edit().putBoolean("save_under_all_tests",true).commit();
+                                mPreferences.edit().putString("a_test_id","All Tests >>"+format).commit();
                                 test_count = 1;
                                 m_run_time = 1;
                                 m_cool_time = 0;
-                                c_test_no = 4;
-                                testid = "Test 1 >>" + UUID.randomUUID();
+                                c_test_no = 1;
+                                testid = "Test 1 >>" + format;
                                 m_graph_name = "small_fp16.binarypb";
                                 allTests.setText("Stop All Tests");
                                 startFragment(m_graph_name);
@@ -924,21 +1064,28 @@ public class ModelTestActivity extends AppCompatActivity implements PermissionMa
                 showInitialView("Device Testing");
 
             } else {
+                SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
                 switch (test_count) {
                     case 1:
                         is_test_running = true;
                         m_run_time = 3;
                         m_cool_time = 1;
-                        testid = "Test 2 >>" + UUID.randomUUID();
+                        String format = simpleDateFormat.format(new Date());
+                        Log.d(TAG, "Current Timestamp: " + format);
+                        testid = "Test 2 >>" + format;
                         test_count++;
+                        c_test_no = 2;
                         startFragment("small_fp16.binarypb");
                         break;
                     case 2:
                         is_test_running = true;
                         m_run_time = 5;
                         m_cool_time = 3;
-                        testid = "Test 3 >>" + UUID.randomUUID();
+                        String format1 = simpleDateFormat.format(new Date());
+                        Log.d(TAG, "Current Timestamp: " + format1);
+                        testid = "Test 3 >>" + format1;
                         test_count++;
+                        c_test_no = 3;
                         startFragment("small_fp16.binarypb");
                         break;
                     default:
@@ -967,26 +1114,32 @@ public class ModelTestActivity extends AppCompatActivity implements PermissionMa
                 int coolTime = data.getIntExtra("c_time", 0);
 
                 if (graphName.equalsIgnoreCase("large_fp32")) {
-
                     if (test_count == 0) {
                         showInitialView("Device Testing");
 
                     } else {
+                        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("dd-MM-yyyy hh:mm:ss");
                         switch (test_count) {
                             case 1:
                                 is_test_running = true;
                                 m_run_time = 3;
                                 m_cool_time = 1;
-                                testid = "Test 2 >>" + UUID.randomUUID();
+                                String format = simpleDateFormat.format(new Date());
+                                Log.d(TAG, "Current Timestamp: " + format);
+                                testid = "Test 2 >>" + format;
                                 test_count++;
+                                c_test_no = 2;
                                 startFragment("small_fp16.binarypb");
                                 break;
                             case 2:
                                 is_test_running = true;
                                 m_run_time = 5;
                                 m_cool_time = 3;
-                                testid = "Test 3 >>" + UUID.randomUUID();
+                                String format1 = simpleDateFormat.format(new Date());
+                                Log.d(TAG, "Current Timestamp: " + format1);
+                                testid = "Test 3 >>" + format1;
                                 test_count++;
+                                c_test_no = 3;
                                 startFragment("small_fp16.binarypb");
                                 break;
                             default:
@@ -1050,7 +1203,7 @@ public class ModelTestActivity extends AppCompatActivity implements PermissionMa
 
         i.putExtra("graph_name", graphName);
         i.putExtra("c_time", m_cool_time);
-        i.putExtra("test_no",c_test_no+"");
+        i.putExtra("test_no", c_test_no + "");
 //        i.putExtra("r_time",m_run_time);
 //        i.putExtra("test_id",testid);
 

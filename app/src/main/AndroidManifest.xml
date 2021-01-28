@@ -36,9 +36,10 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         android:usesCleartextTraffic="true">
+        <activity android:name=".Performance"></activity>
         <activity
             android:name=".ui.CollingAct"
-            android:screenOrientation="portrait"></activity>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ModelRunActivity"
             android:screenOrientation="portrait" />

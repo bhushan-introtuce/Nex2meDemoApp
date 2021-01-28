@@ -18,6 +18,7 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <LinearLayout
+        android:background="@color/white"
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
@@ -25,6 +26,18 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
+            <TextView
+                android:id="@+id/time_remaning"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:fontFamily="@font/nunito_sans_regular"
+                android:gravity="center"
+                android:text="Time Remaning.."
+                android:textColor="@color/my_primary"
+                app:layout_constraintBottom_toTopOf="@+id/btn_test_1"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/progressBar2" />
 
 
             <TextView
@@ -37,9 +50,10 @@
                 android:textSize="20dp"
                 app:layout_constraintBottom_toTopOf="@+id/tv_4"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
-
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.393" />
 
             <TextView
                 android:id="@+id/tv_4"
@@ -53,20 +67,29 @@
                 android:textSize="20dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent" />
+                app:layout_constraintTop_toTopOf="parent"
+                app:layout_constraintVertical_bias="0.41" />
 
             <ProgressBar
+                android:id="@+id/progressBar2"
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
-                app:layout_constraintBottom_toTopOf="@+id/btn_test_1"
-                app:layout_constraintTop_toBottomOf="@+id/tv_4" />
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_4"
+                app:layout_constraintVertical_bias="0.356" />
 
             <TextView
                 android:id="@+id/btn_test_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
+                android:layout_marginStart="16dp"
+                android:layout_marginEnd="16dp"
                 android:background="@drawable/orangebutton"
                 android:fontFamily="@font/nunito_sans_semi_bold"
                 android:foregroundGravity="center"
@@ -77,7 +100,10 @@
                 android:textSize="22sp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent" />
+                app:layout_constraintHorizontal_bias="0.0"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/progressBar2"
+                app:layout_constraintVertical_bias="0.594" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

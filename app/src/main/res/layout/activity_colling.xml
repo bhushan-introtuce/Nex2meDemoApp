@@ -17,8 +17,23 @@
         android:textSize="20dp"
         app:layout_constraintBottom_toTopOf="@+id/textView8"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.396" />
+
+    <TextView
+        android:id="@+id/tv_time_rem"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:fontFamily="@font/nunito_sans_regular"
+        android:gravity="center"
+        android:text="Time Remaning.. "
+        android:textColor="@color/my_primary"
+        app:layout_constraintBottom_toTopOf="@+id/btn_test_1"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView8" />
 
 
     <TextView
@@ -29,18 +44,22 @@
         android:layout_marginEnd="16dp"
         android:fontFamily="@font/nunito_sans_semi_bold"
         android:gravity="center"
-        android:text="Colling device ...."
+        android:text="Cooling device ...."
         android:textSize="20dp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.426" />
 
     <TextView
         android:id="@+id/btn_test_1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
+        android:layout_marginStart="16dp"
+        android:layout_marginEnd="16dp"
         android:background="@drawable/orangebutton"
         android:fontFamily="@font/nunito_sans_semi_bold"
         android:foregroundGravity="center"
@@ -51,7 +70,10 @@
         android:textSize="22sp"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/textView8"
+        app:layout_constraintVertical_bias="0.731" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

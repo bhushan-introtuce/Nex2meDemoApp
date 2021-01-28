@@ -3,13 +3,18 @@ package co.introtuce.nex2me.test;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.content.res.AssetFileDescriptor;
 import android.graphics.SurfaceTexture;
 import android.media.MediaPlayer;
+import android.net.Uri;
+import android.nfc.Tag;
+import android.opengl.GLES10;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.Size;
 import android.view.Surface;
@@ -36,8 +41,11 @@ import com.google.mediapipe.glutil.EglManager;
 
 import java.io.IOException;
 import java.io.InputStream;
+import java.text.BreakIterator;
 import java.util.ArrayList;
 import java.util.UUID;
+
+import javax.microedition.khronos.opengles.GL10;
 
 import co.introtuce.nex2me.test.analytics.accelerate.AcExternalTextureConverter;
 import co.introtuce.nex2me.test.analytics.accelerate.CustomFrameProcessor;
@@ -65,8 +73,8 @@ public class ModelRunActivity extends AppCompatActivity {
     private static final String y_center = "y_center";
     private static final boolean FLIP_FRAMES_VERTICALLY = true;
 
-    public static int TIME;
-    public static int C_TIME;
+    public int TIME;
+    public int C_TIME;
 
     // Creates and manages an {@link EGLContext}.
     private EglManager eglManager;
@@ -103,6 +111,10 @@ public class ModelRunActivity extends AppCompatActivity {
     int counter = 0;
     public static final String TAG = "MODEl-RUN-ACTIVITY";
     ModelEventListioner modelEventListioner;
+    private Dialog alertBox;
+    private Thread thread;
+    private TextView time_remaning;
+    private Battery batterybefore;
 
     public String getBINARY_GRAPH_NAME() {
         return BINARY_GRAPH_NAME;
@@ -112,21 +124,6 @@ public class ModelRunActivity extends AppCompatActivity {
         this.BINARY_GRAPH_NAME = BINARY_GRAPH_NAME;
     }
 
-    public static int getTIME() {
-        return TIME;
-    }
-
-    public static void setTIME(int TIME) {
-        ModelRunActivity.TIME = TIME;
-    }
-
-    public static int getcTime() {
-        return C_TIME;
-    }
-
-    public static void setcTime(int cTime) {
-        C_TIME = cTime;
-    }
 
     public ModelEventListioner getModelEventListioner() {
         return modelEventListioner;
@@ -141,37 +138,82 @@ public class ModelRunActivity extends AppCompatActivity {
     @Override
     protected void onPause() {
         super.onPause();
+        Log.d(TAG,"Paused");
         stop();
         converter.close();
         handler.removeCallbacksAndMessages(null);
         isPause = true;
+        try {
+            if(thread!=null)
+            {
+                if(thread.isAlive())
+                    thread.interrupt();
+
+            }
+
+        }catch (Exception e)
+        {
+
+        }
+
 
         //processor.getGraph().cancelGraph();
-        processor.close();
+        // processor.close();
 
         newSurfaceView.pause();
 
         newSurfaceView.setVisibility(View.GONE);
+        captureAdvanceLog("After model ends");
+        if(! (BINARY_GRAPH_NAME.equalsIgnoreCase("large_fp32.binarypb")))
+        {
+            mPreferences.edit().putBoolean("intrupted",true).commit();
+        }else {
+            mPreferences.edit().putBoolean("intrupted",false).commit();
+        }
+       // showMessage("summary ");
+        finish();
+
         //reset or release all surface Views And Resources
         // releaseviews();
         //saveLog(BINARY_GRAPH_NAME);
-//        super.onDestroyView();
-//        super.onDestroy();
+    }
 
+    public void showMessage(String msg) {
+
+        alertBox = new Dialog(this);
+        alertBox.setContentView(R.layout.custom_alert_box);
+        TextView tvmessage = alertBox.findViewById(R.id.tv_alert_message);
+        TextView tvTitle = alertBox.findViewById(R.id.tv_dialog_title);
+        tvTitle.setText("Nex2Me");
+        TextView tvOk = alertBox.findViewById(R.id.tv_ok_alert);
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int height = displayMetrics.heightPixels;
+        int width = displayMetrics.widthPixels;
+
+        alertBox.getWindow().setLayout(width - 20, ViewGroup.LayoutParams.WRAP_CONTENT);
+        alertBox.show();
+        tvmessage.setText(msg);
+        tvOk.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                    alertBox.dismiss();
+
+            }
+        });
     }
 
     @Override
     protected void onResume() {
         Log.d("debug>>", "Model Test Fragment Resumed ..");
         super.onResume();
-       // initMediapipe();
+        // initMediapipe();
         captureLogs();
         try {
             newSetupDisplay(findViewById(android.R.id.content).getRootView());
         } catch (Exception e) {
             Log.d("EXCEPTION_E", "Main exception " + e.toString());
         }
-
         play();
         converter = new AcExternalTextureConverter(eglManager.getContext());
         converter.setFlipY(FLIP_FRAMES_VERTICALLY);
@@ -183,28 +225,42 @@ public class ModelRunActivity extends AppCompatActivity {
     }
 
     @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        try {
+        processor.getGraph().closeAllPacketSources();
+        processor.getGraph().closeAllPacketSources();
+        processor.getGraph().tearDown();
+            player.release();
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_model_run);
         textView = findViewById(R.id.tv_4);
         endtest = findViewById(R.id.btn_test_1);
         test_num = findViewById(R.id.tv_test_no);
+        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
+        batterybefore = new Battery(getApplicationContext());
 
         String testNum = getIntent().getStringExtra("test_no");
+        time_remaning = findViewById(R.id.time_remaning);
 
-        if(testNum.equalsIgnoreCase("4"))
-        {
+        if (testNum.equalsIgnoreCase("4")) {
             test_num.setText(" All tests are running");
-        }else {
-            test_num.setText("Test " +testNum + " is running");
+        } else {
+            test_num.setText("Test " + testNum + " is running");
 
         }
+
         handler = new Handler();
         database = FirebaseDatabase.getInstance();
         mPreferences = getSharedPreferences(
                 sharedPrefFile, MODE_PRIVATE);
-
-        getWindow().addFlags(WindowManager.LayoutParams.FLAG_KEEP_SCREEN_ON);
 
         String uid = mPreferences.getString("u_id", " ");
 
@@ -215,6 +271,7 @@ public class ModelRunActivity extends AppCompatActivity {
         TIME = getIntent().getIntExtra("r_time", 1);
         C_TIME = getIntent().getIntExtra("c_time", 0);
         TEST_NO_ID = getIntent().getStringExtra("test_id");
+        startCountDown(TIME);
 
 
         String modal_number = getmodaalNumber(BINARY_GRAPH_NAME.substring(0, BINARY_GRAPH_NAME.length() - 9));
@@ -244,11 +301,16 @@ public class ModelRunActivity extends AppCompatActivity {
                 data.putExtra("c_time", C_TIME);
                 // data.putExtra("homekey","homename");
                 setResult(RESULT_OK, data);
+                if(BINARY_GRAPH_NAME.equalsIgnoreCase("large_fp32.binarypb")
+                        ||BINARY_GRAPH_NAME.equalsIgnoreCase("large_fp32"))
+                {
+                    mPreferences.edit().putBoolean("intrupted",false).commit();
+                }
                 captureAdvanceLog("After model ends");
                 finish();
                 //modelEventListioner.onModelEnds(BINARY_GRAPH_NAME.substring(0, BINARY_GRAPH_NAME.length() - 9), C_TIME);
             }
-        }, 6000);
+        },   TIME*60*1000);
 //TIME*60*
     }
 
@@ -375,7 +437,7 @@ public class ModelRunActivity extends AppCompatActivity {
 
 
     private void newSetupDisplay(View view) {
-        Log.d("View>>",view.toString());
+        Log.d("View>>", view.toString());
         Log.d("SURFACE_CREATION", "Creation start");
         newSurfaceView = new MyGL2SurfaceView(this);
         newSurfaceView.setVisibility(View.GONE);
@@ -482,6 +544,51 @@ public class ModelRunActivity extends AppCompatActivity {
         }
     }
 
+    private void startCountDown(int time) {
+
+        long c_time = System.currentTimeMillis();
+        long t_time = (long) time * 60000;
+
+        long f_time = c_time + t_time;
+
+//        if (time_remaning.getVisibility() == View.GONE) {
+//            time_remaning.setVisibility(View.VISIBLE);
+//            time_remaning.setText(time + " minutes remaining");
+//        }
+
+        thread = new Thread() {
+            @Override
+            public void run() {
+                try {
+                    while (true) {
+                        Thread.sleep(1000);
+                        runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+
+                                long d_time = f_time - System.currentTimeMillis();
+
+                                long minutes = (d_time / 1000) / 60;
+                                long seconds = (d_time / 1000) % 60;
+
+                                 time_remaning.setText(minutes + " minutes " + seconds + " seconds remaining for model "+
+                                         getmodaalNumber(BINARY_GRAPH_NAME.substring(0, BINARY_GRAPH_NAME.length() - 9)));
+                                if (minutes == 0 && seconds == 1) {
+                                    thread.interrupt();
+                                    //onEndTest();
+                                }
+                            }
+                        });
+                    }
+                } catch (InterruptedException e) {
+                    Log.d("Exception>>", e.toString());
+                }
+            }
+        };
+        thread.start();
+    }
+
+
     ProcessBuilder processBuilder;
     String Holder = "";
     String[] DATA = {"/system/bin/cat", "/proc/cpuinfo"};
@@ -563,13 +670,14 @@ public class ModelRunActivity extends AppCompatActivity {
         finalLog.setDevice(device);
         finalLog.setMemory(memory);
         finalLog.setBattery(battery);
+        finalLog.setBattery_before(batterybefore);
         finalLog.setCup_info(CPUInfoStr);
         finalLog.setRuns(runtimes);
+        finalLog.setGpu_info(newSurfaceView.getGPUInfo().toString());
         finalLog.setFirst_runtime(ffr);
         finalLog.setAverage_runtime(getAvgTime(newTotal, runtimes.size(), ffr));
         finalLog.setMin_runtime(minr);
         finalLog.setMax_runtime(maxr);
-
 
         Log.d("Sized>>", runtimes.size() + " ");
         if (title.equalsIgnoreCase("Before model start")) {
@@ -596,20 +704,41 @@ public class ModelRunActivity extends AppCompatActivity {
 //            }
 
 
-            myRef.child(TEST_NO_ID).child(graphName)
-                    .setValue(finalLog).addOnCompleteListener(new OnCompleteListener<Void>() {
-                @Override
-                public void onComplete(@NonNull Task<Void> task) {
-                    Log.d("Success", "Logs Saved");
-                    //Toast.makeText(getContext(), "One Model Tested", Toast.LENGTH_SHORT).show();
-                }
+            if(mPreferences.getBoolean("save_under_all_tests",true))
+            {
+                String childe = mPreferences.getString("a_test_id","All tests  >>"+UUID.randomUUID().toString());
+                myRef.child(childe).child(TEST_NO_ID).child(graphName)
+                        .setValue(finalLog).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Log.d("Success", "Logs Saved");
+                        //Toast.makeText(getContext(), "One Model Tested", Toast.LENGTH_SHORT).show();
+                    }
 
-            }).addOnFailureListener(new OnFailureListener() {
-                @Override
-                public void onFailure(@NonNull Exception e) {
-                    Log.d("Exception>>", e.toString());
-                }
-            });
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("Exception>>", e.toString());
+                    }
+                });
+            }else {
+                myRef.child(TEST_NO_ID).child(graphName)
+                        .setValue(finalLog).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        Log.d("Success", "Logs Saved");
+                        //Toast.makeText(getContext(), "One Model Tested", Toast.LENGTH_SHORT).show();
+                    }
+
+                }).addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception e) {
+                        Log.d("Exception>>", e.toString());
+                    }
+                });
+            }
+
+
         }
 
 

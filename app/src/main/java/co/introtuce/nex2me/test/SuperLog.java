@@ -9,16 +9,35 @@ import java.util.ArrayList;
 import co.introtuce.nex2me.test.helper.MainLog;
 
 public class SuperLog {
-
-
     String status;
     ArrayList<String> runs;
     Device device;
     Battery battery;
+    Battery battery_before;
     Memory memory;
     String gpu_info;
     String cup_info;
+    String testId;
 
+
+    public SuperLog() {
+    }
+
+    public Battery getBattery_before() {
+        return battery_before;
+    }
+
+    public void setBattery_before(Battery battery_before) {
+        this.battery_before = battery_before;
+    }
+
+    public String getTestId() {
+        return testId;
+    }
+
+    public void setTestId(String testId) {
+        this.testId = testId;
+    }
 
     public String getGpu_info() {
         return gpu_info;

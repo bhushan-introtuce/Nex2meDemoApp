@@ -28,7 +28,6 @@ public class Splash1 extends AppCompatActivity {
         setContentView(R.layout.activity_splash1);
         tvnext = findViewById(R.id.tv_11);
 
-
         mPreferences = getSharedPreferences(
                 sharedPrefFile, MODE_PRIVATE);
 
@@ -67,33 +66,46 @@ public class Splash1 extends AppCompatActivity {
         String devicestr = " ";
         String brand = " ";
 
-        for(int i = 0;i<device.getDevice().length();i++)
+        if(device.getDevice()!=null&&device.getBuildBrand()!=null)
         {
-            if(device.getModel().charAt(i)=='.')
-            {
-                break;
+            try {
 
-            }else {
-                devicestr += device.getModel().charAt(i);
+                for(int i = 0;i<device.getDevice().length();i++)
+                {
+                    if(device.getModel().charAt(i)=='.')
+                    {
+                        break;
+
+                    }else {
+                        devicestr += device.getModel().charAt(i);
+                    }
+
+                }
+
+                for(int i = 0;i<device.getBuildBrand().length();i++)
+                {
+                    if(device.getBuildBrand().charAt(i)=='.')
+                    {
+                        break;
+
+                    }else {
+                        brand += device.getBuildBrand().charAt(i);
+                    }
+
+                }
+
+            }catch (Exception e)
+            {
+                Log.d("Exception>>",e.toString());
             }
 
         }
 
-        for(int i = 0;i<device.getBuildBrand().length();i++)
-        {
-            if(device.getBuildBrand().charAt(i)=='.')
-            {
-                break;
-
-            }else {
-                brand += device.getBuildBrand().charAt(i);
-            }
-
-        }
 
         String uid = UUID.randomUUID().toString()+">>"+brand+
                 ">>"+devicestr;
         mPreferences.edit().putString("u_id",uid).commit();
+        mPreferences.edit().putBoolean("intrupted",false).commit();
 
     }
 }

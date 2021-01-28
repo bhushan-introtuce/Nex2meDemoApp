@@ -4,48 +4,60 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:keepScreenOn="true"
     android:background="#ffffff"
+    android:keepScreenOn="true"
     android:orientation="vertical"
     tools:context=".ModelTestActivity">
 
 
-<!--    <FrameLayout-->
-<!--        android:id="@+id/container"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="0dp"-->
-<!--        android:layout_weight="2"-->
-<!--        app:layout_constraintBottom_toBottomOf="parent"-->
-<!--        app:layout_constraintEnd_toEndOf="parent"-->
-<!--        app:layout_constraintStart_toStartOf="parent" />-->
+    <!--    <FrameLayout-->
+    <!--        android:id="@+id/container"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="0dp"-->
+    <!--        android:layout_weight="2"-->
+    <!--        app:layout_constraintBottom_toBottomOf="parent"-->
+    <!--        app:layout_constraintEnd_toEndOf="parent"-->
+    <!--        app:layout_constraintStart_toStartOf="parent" />-->
 
-<!--    <TextView-->
-<!--        android:visibility="gone"-->
-<!--        android:id="@+id/time_remaning"-->
-<!--        android:layout_width="match_parent"-->
-<!--        android:layout_height="wrap_content"-->
-<!--        android:layout_gravity="center"-->
-<!--        android:layout_marginBottom="10dp"-->
-<!--        android:fontFamily="@font/nunito_sans_semi_bold"-->
-<!--        android:gravity="center"-->
-<!--        android:padding="5dp"-->
-<!--        android:text="Timing.."-->
-<!--        android:textColor="@color/my_primary" />-->
+    <!--    <TextView-->
+    <!--        android:visibility="gone"-->
+    <!--        android:id="@+id/time_remaning"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_gravity="center"-->
+    <!--        android:layout_marginBottom="10dp"-->
+    <!--        android:fontFamily="@font/nunito_sans_semi_bold"-->
+    <!--        android:gravity="center"-->
+    <!--        android:padding="5dp"-->
+    <!--        android:text="Timing.."-->
+    <!--        android:textColor="@color/my_primary" />-->
 
     <ScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
         <LinearLayout
-            android:background="#ffffff"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:background="#ffffff"
             android:orientation="vertical">
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-               android:layout_marginTop="50dp"
+            <TextView
+                android:visibility="gone"
+                android:padding="10dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:fontFamily="@font/nunito_sans_semi_bold"
+                android:gravity="end"
+                android:text="See test results       >     "
+                android:textColor="#000000"
+                app:layout_constraintBottom_toBottomOf="parent" />
+
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="20dp"
                 android:orientation="vertical"
                 tools:context=".InitialFragment">
 
@@ -75,6 +87,28 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
+                <TextView
+                    android:id="@+id/tv_results"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="10dp"
+                    android:fontFamily="@font/nunito_sans_regular"
+                    android:text="Results"
+                    android:textSize="12dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/iv_performance"
+                    app:layout_constraintEnd_toStartOf="@+id/iv_performance"
+                    app:layout_constraintTop_toTopOf="@+id/iv_performance"
+                    app:layout_constraintVertical_bias="1.0" />
+
+                <ImageView
+                    android:layout_margin="8dp"
+                    android:padding="5dp"
+                    android:id="@+id/iv_performance"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/ic_baseline_arrow_forward_ios_24"
+                    app:layout_constraintBottom_toBottomOf="parent"
+                    app:layout_constraintEnd_toEndOf="parent" />
 
 
                 <ImageView
@@ -120,21 +154,22 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/textView" />
 
+
             </androidx.constraintlayout.widget.ConstraintLayout>
 
 
             <TextView
-                android:layout_gravity="center"
-                android:foregroundGravity="center"
                 android:id="@+id/btn_test_1"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginStart="40dp"
                 android:layout_marginTop="15dp"
                 android:layout_marginEnd="40dp"
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/orangebutton"
                 android:fontFamily="@font/nunito_sans_semi_bold"
+                android:foregroundGravity="center"
                 android:gravity="center"
                 android:text=" Start Test 1"
                 android:textAppearance="@style/Widget.AppCompat.Button"
@@ -142,28 +177,28 @@
                 android:textSize="22sp" />
 
             <TextView
-                android:layout_marginStart="40dp"
-                android:layout_marginEnd="40dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:fontFamily="@font/nunito_sans_regular"
                 android:gravity="center"
-                android:textSize="12dp"
                 android:text="6 models, runtime: 1min, cool down: 0min"
-                android:fontFamily="@font/nunito_sans_regular"/>
+                android:textSize="12dp" />
 
 
             <TextView
-                android:layout_gravity="center"
-                android:foregroundGravity="center"
                 android:id="@+id/btn_test_2"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginStart="40dp"
                 android:layout_marginTop="28dp"
                 android:layout_marginEnd="40dp"
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/orangebutton"
                 android:fontFamily="@font/nunito_sans_semi_bold"
+                android:foregroundGravity="center"
                 android:gravity="center"
                 android:letterSpacing="-0.019"
                 android:lineHeight="10sp"
@@ -174,27 +209,27 @@
                 android:textSize="22sp" />
 
             <TextView
-                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="40dp"
                 android:layout_marginEnd="40dp"
-                android:layout_width="match_parent"
-                android:textSize="12dp"
-                android:layout_height="wrap_content"
+                android:fontFamily="@font/nunito_sans_regular"
+                android:gravity="center"
                 android:text="6 models, runtime: 3min, cool down: 1min"
-                android:fontFamily="@font/nunito_sans_regular"/>
+                android:textSize="12dp" />
 
             <TextView
-                android:layout_gravity="center"
-                android:foregroundGravity="center"
                 android:id="@+id/btn_test_3"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginStart="40dp"
                 android:layout_marginTop="28dp"
                 android:layout_marginEnd="40dp"
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/orangebutton"
                 android:fontFamily="@font/nunito_sans_semi_bold"
+                android:foregroundGravity="center"
                 android:gravity="center"
                 android:letterSpacing="-0.019"
                 android:lineHeight="10sp"
@@ -205,27 +240,27 @@
                 android:textSize="22sp" />
 
             <TextView
-                android:gravity="center"
-                android:layout_marginStart="40dp"
-                android:layout_marginEnd="40dp"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:textSize="12dp"
+                android:layout_marginStart="40dp"
+                android:layout_marginEnd="40dp"
+                android:fontFamily="@font/nunito_sans_regular"
+                android:gravity="center"
                 android:text="6 models, runtime: 5min, cool down: 3min"
-                android:fontFamily="@font/nunito_sans_regular"/>
+                android:textSize="12dp" />
 
             <TextView
-                android:layout_gravity="center"
-                android:foregroundGravity="center"
                 android:id="@+id/btn_all_tests"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center"
                 android:layout_marginStart="40dp"
                 android:layout_marginTop="28dp"
                 android:layout_marginEnd="40dp"
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/orangebutton"
                 android:fontFamily="@font/nunito_sans_semi_bold"
+                android:foregroundGravity="center"
                 android:gravity="center"
                 android:letterSpacing="-0.019"
                 android:lineHeight="10sp"
@@ -236,15 +271,15 @@
                 android:textSize="22sp" />
 
             <TextView
-                android:gravity="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginStart="40dp"
                 android:layout_marginEnd="40dp"
                 android:layout_marginBottom="20dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:textSize="12dp"
+                android:fontFamily="@font/nunito_sans_regular"
+                android:gravity="center"
                 android:text="All 3 tests , expected time 78 minutes"
-                android:fontFamily="@font/nunito_sans_regular"/>
+                android:textSize="12dp" />
 
 
             <com.skydoves.powerspinner.PowerSpinnerView
@@ -339,8 +374,6 @@
                     android:text="Start Test"
                     android:textColor="#ffffff"
                     android:textStyle="bold" />
-
-
 
 
             </LinearLayout>
