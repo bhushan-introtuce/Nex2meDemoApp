@@ -685,7 +685,6 @@ public class ModelRunActivity extends AppCompatActivity {
         } else {
 
             String graphName = BINARY_GRAPH_NAME.substring(0, BINARY_GRAPH_NAME.length() - 9);
-
             // count ++;
 
 //            if (graphName.equalsIgnoreCase("large_fp16")) {
@@ -702,8 +701,6 @@ public class ModelRunActivity extends AppCompatActivity {
 //            {
 //                Log.d("Exception>>",e.toString());
 //            }
-
-
             if(mPreferences.getBoolean("save_under_all_tests",true))
             {
                 String childe = mPreferences.getString("a_test_id","All tests  >>"+UUID.randomUUID().toString());

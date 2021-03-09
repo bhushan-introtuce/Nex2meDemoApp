@@ -122,12 +122,16 @@ public class ModelTestActivity extends AppCompatActivity implements PermissionMa
 
     }
 
+
     private void showInteruptview() {
 
         if (mPreferences.getBoolean("intrupted", true)) {
             try {
-                showMessage("Last Test Was Terminated  please re run the test");
+
+                showMessage("Current device test is stopped be due an interruption (like moving to another app, stopping the test). \n" +
+                        "Please re-run the test at a suitable time.");
                 mPreferences.edit().putBoolean("intrupted",false).commit();
+
             }catch (Exception e)
             {
                 e.printStackTrace();
@@ -280,8 +284,6 @@ public class ModelTestActivity extends AppCompatActivity implements PermissionMa
     }
 
     private boolean checkUpdate() {
-
-
         return false;
     }
 

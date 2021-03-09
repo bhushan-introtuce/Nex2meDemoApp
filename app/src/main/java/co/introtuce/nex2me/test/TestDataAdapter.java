@@ -45,8 +45,15 @@ public class TestDataAdapter extends RecyclerView.Adapter<TestDataAdapter.TestDa
     public void onBindViewHolder(@NonNull TestDataAdapterViewHolder holder, int position) {
 
         try {
-            holder.textView.setText(dataList.get(position).getTestId().split(">>")[0] + " " +
-                    dataList.get(position).getTestId().split(">>")[1]);
+            if(dataList.get(position).isFrom_all())
+            {
+                holder.textView.setText("All Tests >> "+dataList.get(position).getTestId().split(">>")[0] + " " +
+                        dataList.get(position).getTestId().split(">>")[1]);
+            }else {
+                holder.textView.setText(dataList.get(position).getTestId().split(">>")[0] + " " +
+                        dataList.get(position).getTestId().split(">>")[1]);
+            }
+
 
         } catch (Exception e) {
             e.printStackTrace();

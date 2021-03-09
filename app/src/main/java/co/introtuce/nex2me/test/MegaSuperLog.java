@@ -6,13 +6,21 @@ public class MegaSuperLog {
 
     SuperLog small_fp16,small_fp32,medium_fp16,medium_fp32,large_fp16,large_fp32;
     String testId;
+    boolean from_all = false;
+
 
     public String getTestId() {
         return testId;
     }
 
     public MegaSuperLog() {
+    }
+    public boolean isFrom_all() {
+        return from_all;
+    }
 
+    public void setFrom_all(boolean from_all) {
+        this.from_all = from_all;
     }
 
     public void setTestId(String testId) {

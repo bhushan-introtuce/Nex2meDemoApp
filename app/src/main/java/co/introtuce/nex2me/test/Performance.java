@@ -97,6 +97,7 @@ public class Performance extends AppCompatActivity {
                                     MegaSuperLog lod = json.fromJson(data2, MegaSuperLog.class);
 //                    SuperLog  lod = new SuperLog();
                                     lod.setTestId(doc2.getKey() + " ");
+                                    lod.setFrom_all(true);
                                     dataList.add(lod);
                                     tvEmpty.setVisibility(View.GONE);
                                     pb.setVisibility(View.GONE);

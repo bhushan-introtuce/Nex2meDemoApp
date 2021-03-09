@@ -71,7 +71,7 @@ public class SegmentTesterAct extends AppCompatActivity {
     private SurfaceTexture previewFrameTexture;
     private static CameraHelper.CameraFacing CAMERA_FACING = CameraHelper.CameraFacing.FRONT;
     FrameEncoder encoder;
-    private static final String BINARY_GRAPH_NAME = "hairsegmentationgpu_new.binarypb";
+    private static final String BINARY_GRAPH_NAME = "hairsegmentationgpu.binarypb";
     //private static final String BINARY_GRAPH_NAME = "hairsegmentationgpu.binarypb";
     private static final String INPUT_VIDEO_STREAM_NAME = "input_video";
     private static final String OUTPUT_VIDEO_STREAM_NAME = "output_video";
@@ -634,8 +634,20 @@ public class SegmentTesterAct extends AppCompatActivity {
 
         if(mIsRecording){
             newSurfaceView.stopRecording();
-            Uri contentUri = FileProvider.getUriForFile(this,
-                    "co.introtuce.nex2me.demo.fileprovider", mOutputFile);
+
+
+            try {
+
+                contentUri = FileProvider.getUriForFile(this,
+                        "co.introtuce.nex2me.demo.fileprovider", mOutputFile);
+
+                //share(contentUri);
+                onCompleteRecording(contentUri);
+
+            }catch (Exception e)
+            {
+                //Log.d("Recording_debug>>",e.toString());
+            }
 
             mIsRecording = false;
 

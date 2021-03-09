@@ -52,11 +52,7 @@
         <activity
             android:name=".Splash1"
             android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.MAIN" />
 
-                <category android:name="android.intent.category.LAUNCHER" />
-            </intent-filter>
         </activity>
         <activity
             android:name=".ModelTestActivity"
@@ -69,6 +65,12 @@
         <activity android:name=".RTCHomeActivty">
 
             <!-- //Intent Filter Was Here -->
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+
         </activity>
         <activity android:name=".analytics.YoutubeDemo" />
         <activity android:name=".analytics.accelerate.utils.Camera2TestActivty" />

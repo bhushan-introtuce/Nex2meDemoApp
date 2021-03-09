@@ -125,7 +125,7 @@ public class ImInActivity extends AppCompatActivity {
 
     //Mediapipe spesific
 
-    private static final String BINARY_GRAPH_NAME = "segmentationgraph.binarypb";
+    private static final String BINARY_GRAPH_NAME = "hairsegmentationgpu.binarypb";
     private static final String INPUT_VIDEO_STREAM_NAME = "input_video";
     private static  final String bGVideoInputStream = "bg_video";
     private static final String OUTPUT_VIDEO_STREAM_NAME = "output_video";
@@ -1121,11 +1121,19 @@ public class ImInActivity extends AppCompatActivity {
             // fine.setVisibility(View.GONE);
             //onVideoStopped();
 
-            contentUri = FileProvider.getUriForFile(this,
-                    "co.introtuce.nex2me.demo.fileprovider", mOutputFile);
+            try {
+
+                contentUri = FileProvider.getUriForFile(this,
+                        "co.introtuce.nex2me.demo.fileprovider", mOutputFile);
 
                 //share(contentUri);
-            onCompleteRecording(contentUri);
+                onCompleteRecording(contentUri);
+
+            }catch (Exception e)
+            {
+                Log.d("Recording_debug>>",e.toString());
+            }
+
 
             mIsRecording = false;
 
